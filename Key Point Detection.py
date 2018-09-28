@@ -171,11 +171,33 @@ def findMaxAndMin(lowerIndex,centerIndex,upperIndex,diff,maximums,minimums):
     upperMatrix=diff[upperIndex]
     for i in range(3,len(centerMatrix)-3):
         for j in range(3,len(centerMatrix[0])-3):
-            lower=lowerMatrix[i][j-1:j+2]
-            upper=upperMatrix[i][j-1:j+2]
-            center=centerMatrix[i][j-1:j+2]
-            maxVal=max(max(lower),max(center),max(upper))
-            minVal=min(min(lower),min(center),min(upper))
+            lowerA=lowerMatrix[i-1][j-1:j+2]
+            lowerB=lowerMatrix[i][j-1:j+2]
+            lowerC=lowerMatrix[i+1][j-1:j+2]
+            
+            upperA=upperMatrix[i-1][j-1:j+2]
+            upperB=upperMatrix[i][j-1:j+2]
+            upperC=upperMatrix[i+1][j-1:j+2]
+            
+            
+            centerA=centerMatrix[i-1][j-1:j+2]
+            centerB=centerMatrix[i][j-1:j+2]
+            centerC=centerMatrix[i+1][j-1:j+2]
+            
+            
+            
+            lowerMax=max(max(lowerA),max(lowerB),max(lowerC))
+            upperMax=max(max(upperA),max(upperB),max(upperC))
+            centerMax=max(max(centerA),max(centerB),max(centerC))
+            
+            lowerMin=min(min(lowerA),min(lowerB),min(lowerC))
+            upperMin=min(min(upperA),min(upperB),min(upperC))
+            centerMin=min(min(centerA),min(centerB),min(centerC))
+            
+            #print(lowerMax,centerMax,upperMax)
+            
+            maxVal=max(lowerMax,centerMax,upperMax)
+            minVal=min(lowerMin,centerMin,upperMin)
             if centerMatrix[i][j]==maxVal:
                 maximums.append((i,j))
             if centerMatrix[i][j]==minVal:
@@ -226,5 +248,10 @@ differences=generateDOG(blurredImages)
 new_images=findKeyPoints(differences,blurredImages)
 
 
-
+im=new_images[3]
+pos_edge_both = np.abs(im) / np.max(np.abs(im))
+cv2.namedWindow('Edges along Both directions', cv2.WINDOW_NORMAL)
+cv2.imshow('Edges along Both directions', pos_edge_both)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
